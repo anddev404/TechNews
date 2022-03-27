@@ -21,6 +21,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         return _news
     }
 
+    fun getNewsSize(): Int {
+        return _news.value?.news?.size ?: 0
+    }
+
     fun downloadNews() {
 
         val api = repository.getApi(ApiSource.TECH_NEWS)
