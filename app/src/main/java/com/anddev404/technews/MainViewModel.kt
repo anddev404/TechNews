@@ -1,8 +1,6 @@
 package com.anddev404.technews
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,11 +32,7 @@ class MainViewModel(val repository: Repository) : ViewModel() {
         GlobalScope.launch {
 
             var newsList = api.getNewsOrEmptyList()
-            Handler(Looper.getMainLooper()).postDelayed(
-                {
-                    setNews(newsList)
-                }, 0
-            )
+            _news.postValue(newsList)
         }
     }
 
