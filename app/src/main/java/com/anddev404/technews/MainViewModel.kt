@@ -21,10 +21,6 @@ class MainViewModel(val repository: Repository) : ViewModel() {
         return _news
     }
 
-    fun setNews(news: News) {
-        _news.value = news
-    }
-
     fun downloadNews() {
 
         var api = repository.getApi(ApiSource.TECH_NEWS)
