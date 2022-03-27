@@ -12,7 +12,7 @@ import com.anddev404.repository.remote.image_loaders.ImageLoaderSource
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class MainViewModel(val repository: Repository) : ViewModel() {
+class MainViewModel(private val repository: Repository) : ViewModel() {
 
     private val _news =
         MutableLiveData<News>()
@@ -23,11 +23,11 @@ class MainViewModel(val repository: Repository) : ViewModel() {
 
     fun downloadNews() {
 
-        var api = repository.getApi(ApiSource.TECH_NEWS)
+        val api = repository.getApi(ApiSource.TECH_NEWS)
 
         GlobalScope.launch {
 
-            var newsList = api.getNewsOrEmptyList()
+            val newsList = api.getNewsOrEmptyList()
             _news.postValue(newsList)
         }
     }

@@ -12,31 +12,31 @@ import com.anddev404.technews.utils.ModelConverter
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewModel: MainViewModel;
-    lateinit var newsFragment: NewsListFragment
+    private lateinit var viewModel: MainViewModel
+    private lateinit var newsFragment: NewsListFragment
 
     override
     fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main)
 
         viewModel =
-            MainViewModel(Repository())//TODO add ViewModelFactory// setViewmModel()
+            MainViewModel(Repository())//TODO add ViewModelFactory// setViewModel()
 
         initializeNewsFragment()
         setCallbackForNewsFragment()
 
-        setNewsObserver()
+        setObservers()
 
         viewModel.downloadNews()
 
     }
 
-    fun initializeNewsFragment() {
+    private fun initializeNewsFragment() {
         newsFragment = NewsListFragment.newInstance()
     }
 
-    fun setCallbackForNewsFragment() {
+    private fun setCallbackForNewsFragment() {
 
         newsFragment.setOnNewsListFragmentListener(object : OnNewsListFragmentListener {
             override fun setImage(url: String, newsItem: NewsItem, imageView: ImageView) {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun setNewsObserver() {
+    private fun setObservers() {
         viewModel.getNews().observe(this, Observer {
 
             newsFragment.arguments = Bundle().apply {
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
             }
             supportFragmentManager.beginTransaction()
-                .replace(R.id.news_fragment, newsFragment).commit();
+                .replace(R.id.news_fragment, newsFragment).commit()
 
         })
     }
