@@ -33,8 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initializeNewsFragment() {
-        var fragment = supportFragmentManager.findFragmentById(R.id.news_fragment)
-        newsFragment = fragment as NewsListFragment
+        newsFragment = NewsListFragment.newInstance()
     }
 
     fun setCallbackForNewsFragment() {
@@ -58,7 +57,16 @@ class MainActivity : AppCompatActivity() {
     fun setNewsObserver() {
         viewModel.getNews().observe(this, Observer {
 
-            newsFragment.addItems(ModelConverter.SingularNewsListToNewsItemList(it.news))
+            newsFragment.arguments = Bundle().apply {
+                putParcelableArray(
+                    NewsListFragment.ARG_NEWS_LIST,
+                    ModelConverter.SingularNewsListToNewsItemList(it.news).toTypedArray()
+                )
+
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.news_fragment, newsFragment).commit();
+
         })
     }
 }
