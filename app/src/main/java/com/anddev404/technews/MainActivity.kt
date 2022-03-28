@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.anddev404.repository.Repository
 import com.anddev404.tech_news_views.NewsListFragment
 import com.anddev404.tech_news_views.OnNewsListFragmentListener
@@ -28,8 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel =
-            MainViewModel(Repository())//TODO add ViewModelFactory// setViewModel()
+        val viewModelFactory = MainViewModelFactory(Repository())
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
         initializeNewsFragment()
         initializeErrorFragment()
