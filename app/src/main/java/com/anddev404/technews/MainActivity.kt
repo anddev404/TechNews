@@ -42,7 +42,11 @@ class MainActivity : AppCompatActivity() {
         setObservers()
 
         getNewsIfNeeded()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.listPosition = newsFragment.getFirstVisibleItemPosition()
     }
 
     private fun getNewsIfNeeded() {
@@ -63,7 +67,20 @@ class MainActivity : AppCompatActivity() {
     //region fragment initializations
 
     private fun initializeNewsFragment() {
-        newsFragment = NewsListFragment.newInstance()
+        if (viewModel.getNewsSize() > 0) {
+
+            var news = viewModel.getNews().value?.news ?: arrayListOf()
+            newsFragment =
+                NewsListFragment.newInstance(
+                    1,
+                    ModelConverter.SingularNewsListToNewsItemList(news).toTypedArray(),
+                    viewModel.listPosition
+                )
+
+        } else {
+            newsFragment = NewsListFragment.newInstance(1)
+
+        }
     }
 
     private fun initializeErrorFragment() {
