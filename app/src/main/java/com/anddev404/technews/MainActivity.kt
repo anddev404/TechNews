@@ -118,13 +118,10 @@ class MainActivity : AppCompatActivity() {
     private fun setObservers() {
         viewModel.getNews().observe(this, Observer {
 
-            newsFragment.arguments = Bundle().apply {
-                putParcelableArray(
-                    NewsListFragment.ARG_NEWS_LIST,
-                    ModelConverter.SingularNewsListToNewsItemList(it.news).toTypedArray()
-                )
-
-            }
+            newsFragment.arguments?.putParcelableArray(
+                NewsListFragment.ARG_NEWS_LIST,
+                ModelConverter.SingularNewsListToNewsItemList(it.news).toTypedArray()
+            )
             supportFragmentManager.beginTransaction()
                 .replace(R.id.news_fragment, newsFragment).commit()
 
