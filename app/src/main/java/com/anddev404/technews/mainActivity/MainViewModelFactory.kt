@@ -1,4 +1,4 @@
-package com.anddev404.technews
+package com.anddev404.technews.mainActivity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

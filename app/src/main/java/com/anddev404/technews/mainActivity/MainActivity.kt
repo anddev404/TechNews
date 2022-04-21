@@ -1,4 +1,4 @@
-package com.anddev404.technews
+package com.anddev404.technews.mainActivity
 
 import android.os.Bundle
 import android.widget.ImageView
@@ -16,6 +16,7 @@ import com.anddev404.tech_news_views.showErrorFragment.OnShowErrorFragmentListen
 import com.anddev404.tech_news_views.showErrorFragment.ShowErrorFragment
 import com.anddev404.tech_news_views.showNewsDetailsFragment.NewsDetailsFragment
 import com.anddev404.tech_news_views.showProgressFragment.ShowProgressFragment
+import com.anddev404.technews.R
 import com.anddev404.technews.utils.Internet
 import com.anddev404.technews.utils.ModelConverter
 

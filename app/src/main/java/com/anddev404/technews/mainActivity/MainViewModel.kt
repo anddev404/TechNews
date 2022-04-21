@@ -1,4 +1,4 @@
-package com.anddev404.technews
+package com.anddev404.technews.mainActivity
 
 import android.content.Context
 import android.widget.ImageView
