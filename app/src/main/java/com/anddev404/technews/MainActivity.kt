@@ -8,9 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anddev404.repository.Repository
 import com.anddev404.repository.model.News
-import com.anddev404.tech_news_views.NewsListFragment
-import com.anddev404.tech_news_views.OnNewsListFragmentListener
-import com.anddev404.tech_news_views.placeholder.NewsItem
+import com.anddev404.tech_news_views.newsListFragment.NewsListFragment
+import com.anddev404.tech_news_views.newsListFragment.OnNewsListFragmentListener
+import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
 import com.anddev404.tech_news_views.showErrorFragment.Error
 import com.anddev404.tech_news_views.showErrorFragment.ErrorType
 import com.anddev404.tech_news_views.showErrorFragment.OnShowErrorFragmentListener
