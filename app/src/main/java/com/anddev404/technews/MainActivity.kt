@@ -167,4 +167,24 @@ class MainActivity : AppCompatActivity() {
         })
     }
     //endregion
+
+    override fun onBackPressed() {
+
+        if (this::detailFragment.isInitialized && detailFragment != null && detailFragment.isVisible()) {
+            if (detailFragment.goBack()) {
+            } else {
+                newsFragment.arguments?.putParcelableArray(
+                    NewsListFragment.ARG_NEWS_LIST,
+                    ModelConverter.SingularNewsListToNewsItemList(
+                        viewModel.getNews().value?.news ?: arrayListOf()
+                    ).toTypedArray()
+                )
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.news_fragment, newsFragment).commit()
+            }
+        } else {
+            super.onBackPressed()
+        }
+
+    }
 }
