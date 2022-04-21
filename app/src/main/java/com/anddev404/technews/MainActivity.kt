@@ -121,14 +121,9 @@ class MainActivity : AppCompatActivity() {
             override fun tapItem(itemPosition: Int, newsItem: NewsItem) {
 
                 if (viewModel.getNews().value is News) {
+                    
+                    detailFragment.setBundle(newsItem.siteUrl)
 
-                    detailFragment.arguments = Bundle().apply {
-                        putString(
-                            "url", (viewModel.getNews().value as News).news.get(
-                                itemPosition
-                            ).link
-                        )
-                    }
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.news_fragment, detailFragment).commit()
                 }
