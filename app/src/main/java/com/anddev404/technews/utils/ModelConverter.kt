@@ -11,7 +11,7 @@ class ModelConverter {
             var newsItemList = arrayListOf<NewsItem>()
 
             for (i in news) {
-                newsItemList.add(NewsItem(i.header, i.imageUrl))
+                newsItemList.add(NewsItem(i.header, i.imageUrl, i.link))
             }
             return newsItemList
         }
