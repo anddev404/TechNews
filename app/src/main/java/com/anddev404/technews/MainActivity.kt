@@ -1,11 +1,13 @@
 package com.anddev404.technews
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anddev404.repository.Repository
+import com.anddev404.repository.model.News
 import com.anddev404.tech_news_views.NewsListFragment
 import com.anddev404.tech_news_views.OnNewsListFragmentListener
 import com.anddev404.tech_news_views.placeholder.NewsItem
@@ -13,6 +15,7 @@ import com.anddev404.tech_news_views.showErrorFragment.Error
 import com.anddev404.tech_news_views.showErrorFragment.ErrorType
 import com.anddev404.tech_news_views.showErrorFragment.OnShowErrorFragmentListener
 import com.anddev404.tech_news_views.showErrorFragment.ShowErrorFragment
+import com.anddev404.tech_news_views.showNewsDetailsFragment.NewsDetailsFragment
 import com.anddev404.tech_news_views.showProgressFragment.ShowProgressFragment
 import com.anddev404.technews.utils.Internet
 import com.anddev404.technews.utils.ModelConverter
@@ -20,9 +23,11 @@ import com.anddev404.technews.utils.ModelConverter
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
+
     private lateinit var newsFragment: NewsListFragment
     private lateinit var errorFragment: ShowErrorFragment
     private lateinit var progressFragment: ShowProgressFragment
+    private lateinit var detailFragment: NewsDetailsFragment
 
     override
     fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         initializeNewsFragment()
         initializeErrorFragment()
         initializeProgressFragment()
+        initializeDetailsFragment()
 
         setCallbackForNewsFragment()
         setCallbackForErrorFragment()
@@ -97,6 +103,10 @@ class MainActivity : AppCompatActivity() {
         progressFragment = ShowProgressFragment()
     }
 
+    private fun initializeDetailsFragment() {
+        detailFragment = NewsDetailsFragment()
+    }
+
     //endregion
 
     //region fragment callbacks
@@ -110,7 +120,19 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun tapItem(itemPosition: Int, newsItem: NewsItem) {
-                // TODO("Not yet implemented")
+
+                if (viewModel.getNews().value is News) {
+
+                    detailFragment.arguments = Bundle().apply {
+                        putString(
+                            "url", (viewModel.getNews().value as News).news.get(
+                                itemPosition
+                            ).link
+                        )
+                    }
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.news_fragment, detailFragment).commit()
+                }
             }
 
             override fun updateList() {
