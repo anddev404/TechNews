@@ -1,12 +1,11 @@
 package com.anddev404.technews.mainActivity
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anddev404.repository.Repository
-import com.anddev404.repository.model.News
 import com.anddev404.tech_news_views.newsListFragment.NewsListFragment
 import com.anddev404.tech_news_views.newsListFragment.OnNewsListFragmentListener
 import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
@@ -17,20 +16,22 @@ import com.anddev404.tech_news_views.showErrorFragment.ShowErrorFragment
 import com.anddev404.tech_news_views.showNewsDetailsFragment.NewsDetailsFragment
 import com.anddev404.tech_news_views.showProgressFragment.ShowProgressFragment
 import com.anddev404.technews.R
-import com.anddev404.technews.utils.Internet
-import com.anddev404.technews.utils.ModelConverter
+import com.anddev404.technews.utils.AndroidBars.Companion.changeColors
 
 class MainActivity : AppCompatActivity() {
 
+    //region variables
     private lateinit var viewModel: MainViewModel
 
     private lateinit var newsFragment: NewsListFragment
     private lateinit var errorFragment: ShowErrorFragment
     private lateinit var progressFragment: ShowProgressFragment
     private lateinit var detailFragment: NewsDetailsFragment
+    //endregion
 
-    override
-    fun onCreate(savedInstanceState: Bundle?) {
+    //region activity methods
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -39,54 +40,53 @@ class MainActivity : AppCompatActivity() {
 
         initializeNewsFragment()
         initializeErrorFragment()
-        initializeProgressFragment()
         initializeDetailsFragment()
+        initializeProgressFragment()
 
-        setCallbackForNewsFragment()
         setCallbackForErrorFragment()
+        setCallbackForNewsFragment()
 
         setObservers()
 
-        getNewsIfNeeded()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        changeColors(this, resources.getColor(R.color.primary_color))
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.listPosition = newsFragment.getFirstVisibleItemPosition()
-    }
 
-    private fun getNewsIfNeeded() {
-        if (viewModel.getNewsSize() == 0) {
-            if (Internet.isOnline(this)) {
+        if (viewModel.actualFragment.value == FragmentsEnum.SHOW_LIST) {
 
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.news_fragment, progressFragment).commit()
-                viewModel.downloadNews()
-            } else {
-
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.news_fragment, errorFragment).commit()
-            }
+            var position = newsFragment.getFirstVisibleItemPosition()
+            viewModel.listPosition = position
         }
     }
+
+    override fun onBackPressed() {
+
+        if (detailFragment.isVisible()) {
+            if (detailFragment.goBack()) else viewModel.showList()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.getItemId()
+        if (id == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    //endregion
 
     //region fragment initializations
 
     private fun initializeNewsFragment() {
-        if (viewModel.getNewsSize() > 0) {
 
-            var news = viewModel.getNews().value?.news ?: arrayListOf()
-            newsFragment =
-                NewsListFragment.newInstance(
-                    1,
-                    ModelConverter.SingularNewsListToNewsItemList(news).toTypedArray(),
-                    viewModel.listPosition
-                )
-
-        } else {
-            newsFragment = NewsListFragment.newInstance(1)
-
-        }
+        newsFragment = NewsListFragment.newInstance(1)
     }
 
     private fun initializeErrorFragment() {
@@ -120,14 +120,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun tapItem(itemPosition: Int, newsItem: NewsItem) {
+                viewModel.setUrl(newsItem.siteUrl)
+                viewModel.showNewsDetails()
 
-                if (viewModel.getNews().value is News) {
-                    
-                    detailFragment.setBundle(newsItem.siteUrl)
-
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.news_fragment, detailFragment).commit()
-                }
             }
 
             override fun updateList() {
@@ -140,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
         errorFragment.setOnShowErrorFragmentListener(object : OnShowErrorFragmentListener {
             override fun clickedErrorButton(error: Error) {
-                getNewsIfNeeded()
+                viewModel.loadList()
             }
         })
     }
@@ -150,36 +145,71 @@ class MainActivity : AppCompatActivity() {
     //region live data observers
 
     private fun setObservers() {
-        viewModel.getNews().observe(this, Observer {
 
-            newsFragment.arguments?.putParcelableArray(
-                NewsListFragment.ARG_NEWS_LIST,
-                ModelConverter.SingularNewsListToNewsItemList(it.news).toTypedArray()
-            )
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.news_fragment, newsFragment).commit()
+        viewModel.actualFragment.observe(this) {
 
-        })
-    }
-    //endregion
-
-    override fun onBackPressed() {
-
-        if (this::detailFragment.isInitialized && detailFragment != null && detailFragment.isVisible()) {
-            if (detailFragment.goBack()) {
-            } else {
-                newsFragment.arguments?.putParcelableArray(
-                    NewsListFragment.ARG_NEWS_LIST,
-                    ModelConverter.SingularNewsListToNewsItemList(
-                        viewModel.getNews().value?.news ?: arrayListOf()
-                    ).toTypedArray()
-                )
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.news_fragment, newsFragment).commit()
+            when (it) {
+                FragmentsEnum.LOAD_LIST -> {
+                    showLoadFragment()
+                }
+                FragmentsEnum.ERROR -> {
+                    showErrorFragment()
+                }
             }
-        } else {
-            super.onBackPressed()
         }
 
+        viewModel.news.observe(this) {
+
+            if (viewModel.actualFragment.value == FragmentsEnum.SHOW_LIST) showNewsList(
+                it,
+                viewModel.listPosition
+            )
+        }
+
+        viewModel.newsDetails.observe(this) {
+
+            if (viewModel.actualFragment.value == FragmentsEnum.SHOW_NEWS_DETAILS) {
+
+                if (newsFragment.isVisible) {
+                    var position = newsFragment.getFirstVisibleItemPosition()
+
+                    viewModel.listPosition = position
+                }
+                showNewsDetailsFragment(it)
+            }
+        }
+        viewModel.actionBarTitle.observe(this) { title = it }
     }
+
+//endregion
+
+    //region show fragments
+
+    private fun showLoadFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.news_fragment, progressFragment).commit()
+    }
+
+    private fun showNewsList(list: ArrayList<NewsItem>, position: Int) {
+
+        newsFragment.setBundle(1, list.toTypedArray(), position)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.news_fragment, newsFragment).commit()
+    }
+
+    private fun showErrorFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.news_fragment, errorFragment).commit()
+    }
+
+    private fun showNewsDetailsFragment(url: String) {
+
+        detailFragment.setBundle(url)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.news_fragment, detailFragment).commit()
+    }
+
+    //endregion
 }
