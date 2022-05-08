@@ -8,7 +8,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/news_fragment"
-        android:name="com.anddev404.tech_news_views.showProgressFragment.ShowProgressFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_news_list"></androidx.fragment.app.FragmentContainerView>
