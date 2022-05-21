@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     //region activity methods
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(null)
         setContentView(R.layout.activity_main)
 
         val viewModelFactory = MainViewModelFactory(Repository())
