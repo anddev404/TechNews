@@ -19,10 +19,10 @@ https://github.com/anddev404/TechNews
 
 
    <a href="https://play.google.com/store/apps/developer?id=anddev404">
-   <img width="200"  style="margin:0px 0px 0px 0px" src="https://github.com/anddev404/TechNews/blob/publishBranch/images/Google_Play_Store_badge_EN.svg.png?raw=true)](https://play.google.com/store/apps/developer?id=anddev404">
+   <img width="200"  style="margin:0px 0px 0px 0px" src="https://github.com/anddev404/TechNews/blob/main/images/Google_Play_Store_badge_EN.svg.png?raw=true)](https://play.google.com/store/apps/developer?id=anddev404">
     </a>
 
 ## **Screenshots**
-<img width="200" style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/publishBranch/images/Portrain_List.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/publishBranch/images/Portrain_Details.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/publishBranch/images/Portrain_Internet_Error.jpg?raw=true">
+<img width="200" style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/Portrain_List.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/Portrain_Details.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/Portrain_Internet_Error.jpg?raw=true">
 
 Dalsze etapy rozwoju aplikacji ukierunkowane są na dodanie kolejnych źródeł wiadomości tzn. kolejnych REST API oraz takich funkcjonalności jak: oznaczanie artykułu „gwiazdką”, wyświetlanie wg określonego Tagu, historia.
