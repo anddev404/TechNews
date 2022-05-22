@@ -4,7 +4,7 @@
    <img width="150" align="right" style="margin:0px 0px 0px 0px" src="https://github.com/anddev404/TechNews/blob/main/images/icon.png?raw=true)](https://play.google.com/store/apps/developer?id=anddev404">
     </a>
     
-Tech News to aplikacja która prezentuje użytkownikowi najnowsze wiadomości z dziedziny technologii, IT oraz całego świata cyfrowego
+Tech News to aplikacja która prezentuje użytkownikowi najnowsze wiadomości z dziedziny technologii, IT oraz całego świata cyfrowego.
 
 Ta prosta aplikacja prezentuje wykorzystanie wzorca architektonicznego **MVVM**, oraz komponentów takich jak: **LiveData, ViewModel, Coroutines oraz Retrofit**. Aplikacja Tech News została w całości napisana w języku **Kotlin**. Składa się z niezależnych od siebie, oddzielnie kompilowanych modułów.
 
