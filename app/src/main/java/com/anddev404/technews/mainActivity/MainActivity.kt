@@ -57,22 +57,22 @@ class MainActivity : AppCompatActivity() {
 
         if (viewModel.actualFragment.value == FragmentsEnum.SHOW_LIST) {
 
-            var position = newsFragment.getFirstVisibleItemPosition()
+            val position = newsFragment.getFirstVisibleItemPosition()
             viewModel.listPosition = position
         }
     }
 
     override fun onBackPressed() {
 
-        if (detailFragment.isVisible()) {
-            if (detailFragment.goBack()) else viewModel.showList()
+        if (detailFragment.isVisible) {
+            if (!detailFragment.goBack()) viewModel.showList()
         } else {
             super.onBackPressed()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id: Int = item.getItemId()
+        val id: Int = item.itemId
         if (id == android.R.id.home) {
             onBackPressed()
             return true
@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity() {
                 FragmentsEnum.ERROR -> {
                     showErrorFragment()
                 }
+                else -> {}
             }
         }
 
@@ -171,7 +172,7 @@ class MainActivity : AppCompatActivity() {
             if (viewModel.actualFragment.value == FragmentsEnum.SHOW_NEWS_DETAILS) {
 
                 if (newsFragment.isVisible) {
-                    var position = newsFragment.getFirstVisibleItemPosition()
+                    val position = newsFragment.getFirstVisibleItemPosition()
 
                     viewModel.listPosition = position
                 }

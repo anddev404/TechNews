@@ -22,8 +22,8 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     private val _newsRepository = MutableLiveData<News>()
     private var newsView: LiveData<ArrayList<NewsItem>> =
-        Transformations.map(_newsRepository) { newsRepo ->
-            ModelConverter.SingularNewsListToNewsItemList(newsRepo.news)
+        Transformations.map(_newsRepository) {
+            ModelConverter.singularNewsListToNewsItemList(it.news)
         }
 
     val news: MediatorLiveData<ArrayList<NewsItem>> =
@@ -37,6 +37,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                     FragmentsEnum.SHOW_LIST -> {
                         if (newsView.value != null) value = newsView.value
                     }
+                    else -> {}
                 }
             }
             addSource(newsView) {
@@ -44,6 +45,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                     FragmentsEnum.SHOW_LIST -> {
                         value = it
                     }
+                    else -> {}
                 }
             }
         }
@@ -58,7 +60,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     private fun downloadNews() {
 
-        val api = repository.getApi(ApiSource.TECH_NEWS)
+        val api = repository.getApi(ApiSource.BING_NEWS_SEARCH)
 
         GlobalScope.launch {
 
@@ -101,6 +103,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                     FragmentsEnum.SHOW_NEWS_DETAILS -> {
                         if (_url.value != null) value = _url.value
                     }
+                    else -> {}
                 }
             }
             addSource(_url) {
@@ -108,6 +111,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                     FragmentsEnum.SHOW_NEWS_DETAILS -> {
                         value = it
                     }
+                    else -> {}
                 }
             }
         }
@@ -116,11 +120,11 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     //region actionBar
 
-    val actionBarTitle: LiveData<String> = Transformations.map(_actualFragment) { fragment ->
-        getTitle(fragment)
+    val actionBarTitle: LiveData<String> = Transformations.map(_actualFragment) {
+        getTitle(it)
     }
 
-    fun getTitle(fragment: FragmentsEnum): String {
+    private fun getTitle(fragment: FragmentsEnum): String {
         return when (fragment) {
             FragmentsEnum.LOAD_LIST -> {
                 "Loading"
@@ -135,7 +139,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                 "Details"
             }
         }
-        return ""
     }
 
     //endregion

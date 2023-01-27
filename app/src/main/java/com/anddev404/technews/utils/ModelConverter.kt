@@ -6,9 +6,9 @@ import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
 class ModelConverter {
 
     companion object {
-        fun SingularNewsListToNewsItemList(news: List<SingularNews>): ArrayList<NewsItem> {
+        fun singularNewsListToNewsItemList(news: List<SingularNews>): ArrayList<NewsItem> {
 
-            var newsItemList = arrayListOf<NewsItem>()
+            val newsItemList = arrayListOf<NewsItem>()
 
             for (i in news) {
                 newsItemList.add(NewsItem(i.header, i.imageUrl, i.link))
