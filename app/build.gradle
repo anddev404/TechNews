@@ -44,7 +44,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     //repository
-    implementation 'com.github.anddev404:TechNewsRepository:1.1.0'
+    implementation 'com.github.anddev404:TechNewsRepository:1.2.0'
 
     //views
     implementation 'com.github.anddev404:TechNewsViews:1.6.0'
