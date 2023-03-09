@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TechNews</string>
+
+    <string name="load_fragment_title">Loading</string>
+    <string name="show_list_fragment_title">News</string>
+    <string name="error_fragment_title">Error</string>
+    <string name="show_details_fragment_title">Details</string>
+
 </resources>
