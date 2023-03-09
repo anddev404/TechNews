@@ -10,7 +10,6 @@ import com.anddev404.tech_news_views.newsListFragment.NewsListFragment
 import com.anddev404.tech_news_views.newsListFragment.OnNewsListFragmentListener
 import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
 import com.anddev404.tech_news_views.showErrorFragment.Error
-import com.anddev404.tech_news_views.showErrorFragment.ErrorType
 import com.anddev404.tech_news_views.showErrorFragment.OnShowErrorFragmentListener
 import com.anddev404.tech_news_views.showErrorFragment.ShowErrorFragment
 import com.anddev404.tech_news_views.showNewsDetailsFragment.NewsDetailsFragment
@@ -92,9 +91,8 @@ class MainActivity : AppCompatActivity() {
     private fun initializeErrorFragment() {
         errorFragment = ShowErrorFragment.newInstance(
             Error(
-                "Turn On The Internet",
-                "Ok",
-                ErrorType.INTERNET_OFF
+                "Error",
+                "try again",
             )
         )
     }
