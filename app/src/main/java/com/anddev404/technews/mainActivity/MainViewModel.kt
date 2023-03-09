@@ -120,26 +120,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     //region actionBar
 
-    val actionBarTitle: LiveData<String> = Transformations.map(_actualFragment) {
-        getTitle(it)
-    }
-
-    private fun getTitle(fragment: FragmentsEnum): String {
-        return when (fragment) {
-            FragmentsEnum.LOAD_LIST -> {
-                "Loading"
-            }
-            FragmentsEnum.SHOW_LIST -> {
-                "News"
-            }
-            FragmentsEnum.ERROR -> {
-                "Error"
-            }
-            FragmentsEnum.SHOW_NEWS_DETAILS -> {
-                "Details"
-            }
-        }
-    }
+    val actionBarTitle: LiveData<FragmentsEnum> = _actualFragment
 
     //endregion
 }

@@ -177,10 +177,27 @@ class MainActivity : AppCompatActivity() {
                 showNewsDetailsFragment(it)
             }
         }
-        viewModel.actionBarTitle.observe(this) { title = it }
+        viewModel.actionBarTitle.observe(this) { title = getTitle(it) }
     }
 
-//endregion
+    private fun getTitle(fragment: FragmentsEnum): String {
+        return when (fragment) {
+            FragmentsEnum.LOAD_LIST -> {
+                resources.getString(R.string.load_fragment_title)
+            }
+            FragmentsEnum.SHOW_LIST -> {
+                resources.getString(R.string.show_list_fragment_title)
+            }
+            FragmentsEnum.ERROR -> {
+                resources.getString(R.string.error_fragment_title)
+            }
+            FragmentsEnum.SHOW_NEWS_DETAILS -> {
+                resources.getString(R.string.show_details_fragment_title)
+            }
+        }
+    }
+
+    //endregion
 
     //region show fragments
 
