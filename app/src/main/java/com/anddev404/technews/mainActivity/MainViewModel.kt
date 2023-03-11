@@ -10,6 +10,7 @@ import com.anddev404.repository.model.News
 import com.anddev404.repository.remote.ApiSource
 import com.anddev404.repository.remote.image_loaders.ImageLoaderSource
 import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
+import com.anddev404.technews.utils.Internet
 import com.anddev404.technews.utils.ModelConverter
 import kotlinx.coroutines.launch
 
@@ -54,7 +55,8 @@ class MainViewModel(
             }
         }
 
-    val error = MutableLiveData<ResponseError>()
+    private val _error = MutableLiveData<ResponseError>()
+    val error: LiveData<ResponseError> = _error
 
     fun loadList() {
         _actualFragment.value = FragmentsEnum.LOAD_LIST
@@ -66,6 +68,11 @@ class MainViewModel(
 
     private fun downloadNews() {
 
+        if (!Internet.isOnline(applicationContext)) {
+            _error.postValue(ResponseError.NO_INTERNET_CONNECTION)
+            _actualFragment.postValue(FragmentsEnum.ERROR)
+            return
+        }
         val api = repository.getApiV2(ApiSource.NEWS)
         viewModelScope.launch {
 
@@ -76,7 +83,7 @@ class MainViewModel(
                 _actualFragment.postValue(FragmentsEnum.SHOW_LIST)
             } else {
 
-                error.postValue(response.error.value)
+                _error.postValue(response.error.value)
                 _actualFragment.postValue(FragmentsEnum.ERROR)
             }
         }
