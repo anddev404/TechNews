@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.lifecycle.*
 import com.anddev404.repository.Repository
+import com.anddev404.repository.errors.ResponseError
 import com.anddev404.repository.model.News
 import com.anddev404.repository.remote.ApiSource
 import com.anddev404.repository.remote.image_loaders.ImageLoaderSource
@@ -49,6 +50,8 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             }
         }
 
+    val error = MutableLiveData<ResponseError>()
+
     fun loadList() {
         _actualFragment.value = FragmentsEnum.LOAD_LIST
     }
@@ -60,18 +63,18 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     private fun downloadNews() {
 
         val api = repository.getApiV2(ApiSource.NEWS)
-
         viewModelScope.launch {
 
-            val newsList = api.getNewsOrEmptyList()
+            val response = api.getResponse()
+            if (response.responseCode == 200) {
 
-            if (newsList.news.isEmpty()) {
-                _actualFragment.postValue(FragmentsEnum.ERROR)
-            } else {
-                _newsRepository.postValue(newsList)
+                _newsRepository.postValue(response.news.value)
                 _actualFragment.postValue(FragmentsEnum.SHOW_LIST)
-            }
+            } else {
 
+                error.postValue(response.error.value)
+                _actualFragment.postValue(FragmentsEnum.ERROR)
+            }
         }
     }
 
