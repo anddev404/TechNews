@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         setObservers()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        changeColors(this, resources.getColor(R.color.primary_color,theme))
+        changeColors(this, resources.getColor(R.color.primary_color, theme))
     }
 
     override fun onPause() {
@@ -177,6 +177,7 @@ class MainActivity : AppCompatActivity() {
                 showNewsDetailsFragment(it)
             }
         }
+
         viewModel.actionBarTitle.observe(this) { title = getTitle(it) }
     }
 
