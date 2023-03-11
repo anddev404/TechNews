@@ -62,7 +62,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
         val api = repository.getApiV2(ApiSource.NEWS)
 
-        GlobalScope.launch {
+        viewModelScope.launch {
 
             val newsList = api.getNewsOrEmptyList()
 
