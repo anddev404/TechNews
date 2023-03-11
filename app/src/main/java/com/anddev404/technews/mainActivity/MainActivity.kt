@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         setObservers()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        changeColors(this, resources.getColor(R.color.primary_color))
+        changeColors(this, resources.getColor(R.color.primary_color,theme))
     }
 
     override fun onPause() {
