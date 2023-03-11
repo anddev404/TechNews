@@ -174,6 +174,9 @@ class MainActivity : AppCompatActivity() {
                 showNewsDetailsFragment(it)
             }
         }
+        viewModel.error.observe(this) {
+            errorFragment.setError(Error(it.message()))
+        }
 
         viewModel.actionBarTitle.observe(this) { title = getTitle(it) }
     }
