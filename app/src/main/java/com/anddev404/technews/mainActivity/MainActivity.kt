@@ -88,12 +88,9 @@ class MainActivity : AppCompatActivity() {
         newsFragment = NewsListFragment.newInstance(1)
     }
 
-    private fun initializeErrorFragment() {
+    private fun initializeErrorFragment(text: String = "Error", textButton: String = "try again") {
         errorFragment = ShowErrorFragment.newInstance(
-            Error(
-                "Error",
-                "try again",
-            )
+            Error(text, textButton)
         )
     }
 
