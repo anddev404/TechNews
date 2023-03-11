@@ -9,7 +9,6 @@ import com.anddev404.repository.remote.ApiSource
 import com.anddev404.repository.remote.image_loaders.ImageLoaderSource
 import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
 import com.anddev404.technews.utils.ModelConverter
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: Repository) : ViewModel() {
