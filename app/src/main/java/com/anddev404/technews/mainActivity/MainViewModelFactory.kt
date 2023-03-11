@@ -8,8 +8,8 @@ import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
 class MainViewModelFactory(
-    private var repository: Repository,
-    private var applicationContext: Application
+    private val repository: Repository,
+    private val applicationContext: Application
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
