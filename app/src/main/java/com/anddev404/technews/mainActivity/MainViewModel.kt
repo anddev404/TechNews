@@ -1,5 +1,6 @@
 package com.anddev404.technews.mainActivity
 
+import android.app.Application
 import android.content.Context
 import android.widget.ImageView
 import androidx.lifecycle.*
@@ -12,7 +13,10 @@ import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
 import com.anddev404.technews.utils.ModelConverter
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: Repository) : ViewModel() {
+class MainViewModel(
+    private val repository: Repository,
+    private val applicationContext: Application
+) : ViewModel() {
 
     private val _actualFragment = MutableLiveData(FragmentsEnum.LOAD_LIST)
     val actualFragment: LiveData<FragmentsEnum> = _actualFragment
