@@ -60,7 +60,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     private fun downloadNews() {
 
-        val api = repository.getApi(ApiSource.BING_NEWS_SEARCH)
+        val api = repository.getApiV2(ApiSource.NEWS)
 
         GlobalScope.launch {
 
