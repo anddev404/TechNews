@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(null)
         setContentView(R.layout.activity_main)
 
-        val viewModelFactory = MainViewModelFactory(Repository())
+        val viewModelFactory = MainViewModelFactory(Repository(), application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
         initializeNewsFragment()
