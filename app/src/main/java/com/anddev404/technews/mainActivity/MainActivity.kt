@@ -1,6 +1,8 @@
 package com.anddev404.technews.mainActivity
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import com.anddev404.tech_news_views.showNewsDetailsFragment.NewsDetailsFragment
 import com.anddev404.tech_news_views.showProgressFragment.ShowProgressFragment
 import com.anddev404.technews.R
 import com.anddev404.technews.utils.AndroidBars.Companion.changeColors
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         setObservers()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupActionBar()
         changeColors(this, resources.getColor(R.color.primary_color, theme))
     }
 
@@ -76,7 +79,31 @@ class MainActivity : AppCompatActivity() {
             onBackPressed()
             return true
         }
+        if (id == R.id.contact_action_bar) {
+            contactUsIntent()
+            return true
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun setupActionBar() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(com.anddev404.technews.R.menu.action_bar, menu)
+        return true
+    }
+
+    fun contactUsIntent() {
+
+        val emailIntent = Intent(Intent.ACTION_SEND)
+        emailIntent.type = "text/plain"
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("anddev404@gmail.com"))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Tech News")
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "")
+
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."))
     }
 
     //endregion
