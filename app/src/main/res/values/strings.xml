@@ -5,5 +5,6 @@
     <string name="show_list_fragment_title">News</string>
     <string name="error_fragment_title">Error</string>
     <string name="show_details_fragment_title">Details</string>
+    <string name="contact">Contact Us</string>
 
 </resources>
