@@ -15,6 +15,11 @@
                 android:title="@string/contact"
                 app:showAsAction="ifRoom|withText" />
 
+            <item
+                android:id="@+id/email_action_bar"
+                android:title="@string/email_contact"
+                app:showAsAction="ifRoom|withText" />
+
         </menu>
     </item>
 </menu>

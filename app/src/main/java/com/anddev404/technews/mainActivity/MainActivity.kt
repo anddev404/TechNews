@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             onBackPressed()
             return true
         }
-        if (id == R.id.contact_action_bar) {
+        if (id == R.id.contact_action_bar || id == R.id.email_action_bar) {
             contactUsIntent()
             return true
         }
