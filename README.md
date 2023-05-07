@@ -23,6 +23,6 @@ https://github.com/anddev404/TechNews
     </a>
 
 ## **Screenshots**
-<img width="200" style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/Portrain_List.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/Portrain_Details.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/Portrain_Internet_Error.jpg?raw=true">
+<img width="200" style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/tech_news_list_1.3.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/tech_news_page_1.3.jpg?raw=true"> <img width="200"  style="margin:0px 0px 0px 5px" src="https://github.com/anddev404/TechNews/blob/main/images/tech_news_error_1.3.jpg?raw=true">
 
 Dalsze etapy rozwoju aplikacji ukierunkowane są na dodanie kolejnych źródeł wiadomości tzn. kolejnych REST API oraz takich funkcjonalności jak: oznaczanie artykułu „gwiazdką”, wyświetlanie wg określonego Tagu, historia.
