@@ -8,6 +8,12 @@ import android.os.Build
 class Internet {
     companion object {
 
+        /**
+         * Ta funkcja sprawdza, czy urządzenie z systemem Android ma połączenie z internetem.
+         * @return true jeśli istnieje połączenie,
+         * @return false jeśli brak połączenia.
+         */
+        //Stack Overflow's code
         fun isOnline(context: Context): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

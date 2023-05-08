@@ -6,6 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.anddev404.repository.Repository
 import java.lang.IllegalArgumentException
 
+/**
+ * @param repository Repository
+ * @param applicationContext Application
+ * @return MainViewModel
+ */
 @Suppress("UNCHECKED_CAST")
 class MainViewModelFactory(
     private val repository: Repository,

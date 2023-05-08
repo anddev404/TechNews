@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 class AndroidBars {
     companion object {
 
+        /**
+         *  Ta funkcja służy do zmiany kolorów paska stanu (status bar)
+         *  oraz paska nawigacji (navigation bar) w aplikacji na Androida.
+         */
         fun changeColors(activity: AppCompatActivity, color: Int) {
 
             try {

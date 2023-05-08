@@ -20,6 +20,9 @@ import com.anddev404.technews.R
 import com.anddev404.technews.utils.AndroidBars.Companion.changeColors
 
 
+/**
+ * To jest główna klasa aplikacji, która odpowiada za wyświetlanie użytkownikowi newsów pobranych z internetu.
+ */
 class MainActivity : AppCompatActivity() {
 
     //region variables
@@ -56,7 +59,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        savePositionOfList()
+    }
 
+    /**
+     * Aby przywrócić ostatnie miejsce, w którym użytkownik przeglądał listę newsów
+     * po ponownym utworzeniu aktywności (np. po zmianie orientacji ekranu),
+     * ta funkcja zapisuje pozycję pierwszego widocznego elementu listy.
+     */
+    fun savePositionOfList() {
         if (viewModel.actualFragment.value == FragmentsEnum.SHOW_LIST) {
 
             val position = newsFragment.getFirstVisibleItemPosition()
@@ -64,6 +75,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Jeśli aktualnie wyświetlany jest fragment NewsDetailsFragment (z wyświetlonymi detalami newsa),
+     * przycisk "cofnięcia" (wstecz) powinien przekierować użytkownika z powrotem do listy newsów.
+     * W przeciwnym wypadku przycisk wykonuje domyślną akcję.
+     */
     override fun onBackPressed() {
 
         if (detailFragment.isVisible) {
@@ -73,6 +89,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Ta metoda jest wywoływana po kliknięciu elementów Action Bar/App Bar
+     * (strzałka wstecz oraz przycisk menu).
+     * Jeśli wybrana zostanie strzałka wstecz, metoda wywołuje onBackPressed().
+     * Jeśli natomiast wybrany zostanie element menu odpowiadający za kontakt, metoda wywołuje contactUsIntent().
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.itemId
         if (id == android.R.id.home) {
@@ -133,6 +155,12 @@ class MainActivity : AppCompatActivity() {
 
     //region fragment callbacks
 
+    /**
+     * Ustawia callbacki dla fragmentu wyświetlającego listę newsów.
+     * Metoda setImage pobiera i wyświetla obrazek powiązany z artykułem z internetu,
+     * metoda tapItem wyświetla szczegóły artykułu w nowym fragmencie,
+     * a metoda updateList, podczas przewijania listy do końca, pobiera kolejne newsy z API.
+     */
     private fun setCallbackForNewsFragment() {
 
         newsFragment.setOnNewsListFragmentListener(object : OnNewsListFragmentListener {
@@ -153,6 +181,12 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Ustawia callbacki dla fragmentu wyświetlającego błąd.
+     *
+     * Metoda <b>clickedErrorButton</b> wywołuje się w momencie kliknięcia przycisku,
+     * który służy do ponowienia operacji, która wcześniej zakończyła się błędem.
+     */
     private fun setCallbackForErrorFragment() {
 
         errorFragment.setOnShowErrorFragmentListener(object : OnShowErrorFragmentListener {
@@ -181,6 +215,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Obserwator 'news' obserwuje listę newsów, które są wyświetlane,
+        // gdy wartość zmiennej 'actualFragment' jest ustawiona na 'SHOW_LIST'.
         viewModel.news.observe(this) {
 
             if (viewModel.actualFragment.value == FragmentsEnum.SHOW_LIST) showNewsList(
@@ -189,25 +225,35 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        // bserwator 'newsDetails' zawiera URL newsa, którego szczegóły są wyświetlane w WebView,
+        // gdy wartość zmiennej 'actualFragment' jest ustawiona na 'SHOW_NEWS_DETAILS'.
         viewModel.newsDetails.observe(this) {
 
             if (viewModel.actualFragment.value == FragmentsEnum.SHOW_NEWS_DETAILS) {
 
                 if (newsFragment.isVisible) {
-                    val position = newsFragment.getFirstVisibleItemPosition()
-
-                    viewModel.listPosition = position
+                    viewModel.listPosition = newsFragment.getFirstVisibleItemPosition()
                 }
                 showNewsDetailsFragment(it)
             }
         }
+
+        // Wyświetlenie odpowiedniego tekstu we fragmencie ErrorFragment
+        // w przypadku wystąpienia problemów z pobieraniem danych.
         viewModel.error.observe(this) {
             errorFragment.setError(Error(it.message()))
         }
 
+        // Aktualizuje tekst w pasku akcji (Action Bar) na podstawie przekazanego parametru.
         viewModel.actionBarTitle.observe(this) { title = getTitle(it) }
     }
 
+    /**
+     * Funkcja "getTitle" pozwala na ustawienie tytułu dla ActionBara
+     * w zależności od aktualnie wyświetlanego fragmentu w aplikacji.
+     * Przyjmuje jako parametr obiekt typu "FragmentsEnum",
+     * który określa, jaki fragment jest aktualnie wyświetlany w aplikacji.
+     */
     private fun getTitle(fragment: FragmentsEnum): String {
         return when (fragment) {
             FragmentsEnum.LOAD_LIST -> {

@@ -19,21 +19,55 @@ class MainViewModel(
     private val applicationContext: Application
 ) : ViewModel() {
 
+    /**
+     * Przechowuje informacje o aktualnym fragmencie wyświetlanym w interfejsie użytkownika.
+     * Aktualny fragment jest reprezentowany przez klasę enum FragmentsEnum,
+     * która definiuje cztery możliwe wartości: LOAD_LIST, ERROR, SHOW_LIST, SHOW_NEWS_DETAILS.
+     */
     private val _actualFragment = MutableLiveData(FragmentsEnum.LOAD_LIST)
+
+    /**
+     * Publiczne pole LiveData, które umożliwia
+     * odczytanie aktualnego fragmentu wyświetlanego w interfejsie użytkownika.
+     */
     val actualFragment: LiveData<FragmentsEnum> = _actualFragment
 
     //region news list
+    /**
+     * Zmienna typu Int, która przechowuje pozycję na liście newsów,
+     * na której użytkownik ostatnio zakończył przeglądanie.
+     */
     var listPosition = 0
 
+    /**
+     * Zawiera odpowiedź z repozytorium, która obejmuje listę newsów
+     * pobranych z internetu przy użyciu modułu technews-repository.
+     */
     private val _newsRepository = MutableLiveData<News>()
+
+    /**
+     * Ze względu na to, że aplikacja składa się z oddzielnie kompilowanych modułów,
+     * takich jak repozytorium czy widoki, każdy moduł posiada swoją reprezentację obiektów
+     * zawierających listę newsów. Z tego powodu niemożliwe jest,
+     * aby repozytorium i widok posiadały wspólny model danych.
+     * Dlatego lista newsów pobrana z repozytorium musi zostać przekonwertowana
+     * na listę newsów, która następnie jest przekazywana do widoku za pomocą obiektu typu LiveData.
+     */
     private var newsView: LiveData<ArrayList<NewsItem>> =
         Transformations.map(_newsRepository) {
             ModelConverter.singularNewsListToNewsItemList(it.news)
         }
 
+    /**
+     * Sprawdza, czy dwa wymagane warunki zostały spełnione przed wyświetleniem listy newsów.
+     * Jeśli wartość zmiennej "actualFragment" jest ustawiona na "SHOW_LIST",
+     * a zmienna "newsView" zawiera listę newsów,
+     * to widok zostaje poinformowany o konieczności wyświetlenia listy newsów.
+     * Jeśli lista ładowania jest aktualnie wyświetlana (actualFragment ustawiony na "LOAD_LIST"),
+     * rozpoczyna się proces pobierania newsów z internetu.
+     */
     val news: MediatorLiveData<ArrayList<NewsItem>> =
         MediatorLiveData<ArrayList<NewsItem>>().apply {
-
             addSource(actualFragment) {
                 when (it) {
                     FragmentsEnum.LOAD_LIST -> {
@@ -55,6 +89,9 @@ class MainViewModel(
             }
         }
 
+    /**
+     * Odpowiedź serwera w przypadku wystąpienia błędu podczas próby pobierania newsów z internetu.
+     */
     private val _error = MutableLiveData<ResponseError>()
     val error: LiveData<ResponseError> = _error
 
@@ -66,6 +103,29 @@ class MainViewModel(
         _actualFragment.value = FragmentsEnum.SHOW_LIST
     }
 
+    /**
+     * Funkcja ma na celu pobranie newsów z internetu i zaktualizowanie listy, która je przechowuje.
+
+     * Najpierw funkcja sprawdza, czy urządzenie ma połączenie z internetem.
+     * Jeśli tak nie jest, funkcja ustawia odpowiedni kod błędu
+     * i aktualizuje wartość "_actualFragment" na "FragmentsEnum.ERROR",
+     * co oznacza, że aplikacja powinna wyświetlić ekran z informacją o błędzie.
+     *
+     * Następnie funkcja uzyskuje dostęp do odpowiedniego API za pomocą obiektu "repository",
+     * a następnie wykonuje żądanie HTTP, aby pobrać listę newsów.
+     *
+     * Następnie funkcja uzyskuje dostęp do odpowiedniego API za pomocą obiektu "repository"
+     * i wykonuje żądanie HTTP, aby pobrać listę newsów.
+     * Jeśli odpowiedź serwera ma kod 200, co oznacza sukces,
+     * funkcja ustawia listę newsów w "_newsRepository" na wartość zwróconą przez serwer
+     * i ustawia wartość "_actualFragment" na "FragmentsEnum.SHOW_LIST", co oznacza,
+     * że aplikacja powinna wyświetlić ekran z listą newsów.
+     *
+     * Jeśli odpowiedź serwera ma inny kod niż 200,
+     * funkcja ustawia odpowiedni kod błędu w "_error" i aktualizuje wartość
+     * "_actualFragment" na "FragmentsEnum.ERROR",
+     * co oznacza, że aplikacja powinna wyświetlić ekran z informacją o błędzie.
+     */
     private fun downloadNews() {
 
         if (!Internet.isOnline(applicationContext)) {
@@ -98,6 +158,9 @@ class MainViewModel(
 
     //region show news details
 
+    /**
+     * Ta funkcja przechowuje adres URL wybranego przez użytkownika newsa, którego szczegóły chce zobaczyć.
+     */
     private val _url: MutableLiveData<String> = MutableLiveData()
 
     fun setUrl(url: String) {
@@ -108,7 +171,14 @@ class MainViewModel(
         _actualFragment.value = FragmentsEnum.SHOW_NEWS_DETAILS
     }
 
-    val newsDetails: MediatorLiveData<String> =
+    /**
+     * newsDetails typu MediatorLiveData sprawdza, czy zostały spełnione dwa wymagane warunki
+     * do wyświetlenia szczegółów danego newsa.
+     * Jeśli zmienna "actualFragment" jest ustawiona na "SHOW_NEWS_DETAILS"
+     * i zmienna "_url" zawiera poprawny adres URL,
+     * funkcja "newsDetails" powiadamia widok o konieczności wyświetlenia szczegółów danego newsa.
+     */
+    val newsDetails =
         MediatorLiveData<String>().apply {
 
             addSource(actualFragment) {
