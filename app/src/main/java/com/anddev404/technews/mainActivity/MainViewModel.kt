@@ -11,12 +11,14 @@ import com.anddev404.repository.remote.ApiSource
 import com.anddev404.repository.remote.image_loaders.ImageLoaderSource
 import com.anddev404.tech_news_views.newsListFragment.model.NewsItem
 import com.anddev404.technews.utils.Internet
+import com.anddev404.technews.utils.InternetInterface
 import com.anddev404.technews.utils.ModelConverter
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val repository: Repository,
-    private val applicationContext: Application
+    private val applicationContext: Application,
+    private val internetConnection: InternetInterface = Internet.Companion
 ) : ViewModel() {
 
     /**
@@ -128,7 +130,7 @@ class MainViewModel(
      */
     private fun downloadNews() {
 
-        if (!Internet.isOnline(applicationContext)) {
+        if (!internetConnection.isOnline(applicationContext)) {
             _error.postValue(ResponseError.NO_INTERNET_CONNECTION)
             _actualFragment.postValue(FragmentsEnum.ERROR)
             return
