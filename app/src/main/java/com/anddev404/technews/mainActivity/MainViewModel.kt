@@ -56,9 +56,7 @@ class MainViewModel(
      * na listę newsów, która następnie jest przekazywana do widoku za pomocą obiektu typu LiveData.
      */
     private var newsView: LiveData<ArrayList<NewsItem>> =
-        Transformations.map(_newsRepository) {
-            ModelConverter.singularNewsListToNewsItemList(it.news)
-        }
+        _newsRepository.map { ModelConverter.singularNewsListToNewsItemList(it.news) }
 
     /**
      * Sprawdza, czy dwa wymagane warunki zostały spełnione przed wyświetleniem listy newsów.
