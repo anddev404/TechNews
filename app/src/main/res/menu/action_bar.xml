@@ -19,6 +19,11 @@
                 android:id="@+id/email_action_bar"
                 android:title="@string/email_contact"
                 app:showAsAction="ifRoom|withText" />
+            <item
+                android:id="@+id/policy_privacy_action_bar"
+                android:icon="@drawable/icon_privacy_policy"
+                android:title="@string/policy_privacy"
+                app:showAsAction="ifRoom|withText" />
 
         </menu>
     </item>

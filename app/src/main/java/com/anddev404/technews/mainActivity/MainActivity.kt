@@ -1,6 +1,7 @@
 package com.anddev404.technews.mainActivity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -105,6 +106,10 @@ class MainActivity : AppCompatActivity() {
             contactUsIntent()
             return true
         }
+        if (id == R.id.policy_privacy_action_bar) {
+            openPrivacyPolicy()
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -126,6 +131,13 @@ class MainActivity : AppCompatActivity() {
         emailIntent.putExtra(Intent.EXTRA_TEXT, "")
 
         startActivity(Intent.createChooser(emailIntent, "Send mail..."))
+    }
+
+    fun openPrivacyPolicy() {
+        val url = "https://anddev404.github.io/TechNews/privacy_policy.html"
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     //endregion

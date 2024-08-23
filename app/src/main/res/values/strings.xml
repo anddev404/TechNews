@@ -7,5 +7,6 @@
     <string name="show_details_fragment_title">Details</string>
     <string name="contact">Contact Us</string>
     <string name="email_contact">at anddev404@gmail.com</string>
+    <string name="policy_privacy">Policy Privacy</string>
 
 </resources>
